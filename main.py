@@ -21,21 +21,19 @@ if DISCORD_TOKEN is None:
 # Obtém o objeto do cliente do discord.py. O cliente é sinônimo do bot
 bot = discord.Client(intents=intents)
 
-@bot.connect
-async def on_connect(message):
-	await message.channel.send(f"Canais:\n{channel_list}")
-	await message.channel.send("Qual canal deseja se juntar(nome)?")
-	try:
-		msg = await bot.wait_for("message",timeout=3.0)
-		channel_name = msg.content
-		await message.channel.send(f"Canal {channel_name} foi selecionado") 
-		if channel_name in channel_list:
-			await bot.connect(channel_name)
-		else:
-			await message.channel.send("Falha ao conectar")
-			
-	except asyncio.TimeoutError:
-		await message.channel.send("Demorou muito a responder")
+@bot.event
+async def voice_channel(ctx,message):
+	if message == "juntar":
+		if ctx.author.voice:
+			channel = ctx.author.voice.channel
+			await channel.connect()
+			await ctx.channel.send(f'Juntando ao canal {channel}')
+	elif message == "desconectar":
+		if ctx.voice_client:
+			await channel.voice_client.disconnect()
+			await ctx.channel.send(f'Saindo...')
+	else:
+		await ctx.channel.send('Você não está em um canal de voz')
 
 # Listener de evento que ativa quando o bot é ligado
 @bot.event
@@ -57,42 +55,42 @@ async def on_ready():
 # Listener de evento que ativa quando uma mensagem é enviada ao canal
 @bot.event
 async def on_message(message):
+	match message.content:
 	# lista de IFs para checar o conteúdo da mensagem
-	if message.content == "oi":
-		await message.channel.send("Olá")
+		case "oi":
+			await message.channel.send("Olá")
 		
-	if message.content == "fechar":
-		await message.channel.send("Fechando")
-		await bot.close()
+		case "fechar":
+			await message.channel.send("Fechando")
+			await bot.close()
 
-	if message.content == "lista":
-		global channel_list
-		if channel_list == []:
-			await message.channel.send("Lista está vazia")
-		else:
-			await message.channel.send(f"Canais: {channel_list}")
+		case "lista":
+			global channel_list
+			if channel_list == []:
+				await message.channel.send("Lista está vazia")
+			else:
+				await message.channel.send(f"Canais: {channel_list}")
 
-	if message.content == "servers":
-		guild = message.guild
-		channel_list = [(channel.name, channel.id) for channel in guild.channels if not isinstance(channel,discord.CategoryChannel)]
-		channel_info = '\n'.join([f"Canal: {name} | ID: {channel_id}" for name, channel_id in channel_list])
-		await message.channel.send(f"Canais:\n{channel_info}")
-
-	if message.content == "tipo":
-		# await message.channel.send("Chegou aqui")	 
-		guild = message.guild
-		if channel_list == []:
-			await message.channel.send("Lista está vazia")	 
-		else:
-			channel_list = [(channel.name, channel.type) for channel in guild.channels if not isinstance(channel,discord.CategoryChannel)]
-			channel_info = '\n'.join([f"Canal: {name} | ID: {channel_type}" for name, channel_type in channel_list])
+		case "servers":
+			guild = message.guild
+			channel_list = [(channel.name, channel.id) for channel in guild.channels if not isinstance(channel,discord.CategoryChannel)]
+			channel_info = '\n'.join([f"Canal: {name} | ID: {channel_id}" for name, channel_id in channel_list])
 			await message.channel.send(f"Canais:\n{channel_info}")
 
-	if message.content == "juntar":
-		on_connect(message)
-	
-	if message.content == "desconectar":
-		await bot.disconnect()
+		case "tipo":
+			# await message.channel.send("Chegou aqui")	 
+			guild = message.guild
+			if channel_list == []:
+				await message.channel.send("Lista está vazia")	 
+			else:
+				channel_list = [(channel.name, channel.type) for channel in guild.channels if not isinstance(channel,discord.CategoryChannel)]
+				channel_info = '\n'.join([f"Canal: {name} | ID: {channel_type}" for name, channel_type in channel_list])
+				await message.channel.send(f"Canais:\n{channel_info}")
 
+		case "juntar"  | "desconectar":
+			msg = message.content
+			await message.channel.send(f"Info:\n{msg}")
+			await voice_channel(message,msg)
+		
 # Executa o bot com o token especificado.
 bot.run(DISCORD_TOKEN)
