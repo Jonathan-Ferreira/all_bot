@@ -13,11 +13,11 @@ channel_list = []
 intents = discord.Intents.default() # Usa as intenções padrões do Bot.
 intents.message_content = True   # Permite que o Bot leia o conteúdo de mensagens
 
-# Carrega o arquivo .env no mesmo diretório do código
-load_dotenv(dotenv_path='C:/Users/SDE/Desktop/Teste Git/discord_bot/DISCORD_TOKEN.env')
 
 # Obtém o token da API localizado no arquivo .env
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
+if DISCORD_TOKEN is None:
+	raise ValueError("Token não localizado.")
 
 # Obtém o objeto do cliente do discord.py. O cliente é sinônimo do bot
 bot = discord.Client(intents=intents)
@@ -49,6 +49,7 @@ async def on_message(message):
 	if message.content == "fechar":
 		await message.channel.send("Fechando")
 		await bot.close()
+		
 	if message.content == "lista":
 		global channel_list
 		if channel_list == []:
@@ -88,7 +89,6 @@ async def on_message(message):
 	
 	if message.content == "desconectar":
 		await bot.disconnect()
-		e
 
 # Executa o bot com o token especificado.
 bot.run(DISCORD_TOKEN)
