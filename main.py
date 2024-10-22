@@ -13,8 +13,6 @@ channel_list = []
 intents = discord.Intents.default() # Usa as intenções padrões do Bot.
 intents.message_content = True   # Permite que o Bot leia o conteúdo de mensagens
 
-# DISCORD_TOKEN = "MTI5NTcxODMwOTE2MDk0Nzc5NQ.Gs8FAx.YegUu3HgdxqwVUDqKI9Qno4AwoRkZLwUWI8jD8"
-
 # Obtém o token da API localizado no arquivo .env
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 if DISCORD_TOKEN is None:
