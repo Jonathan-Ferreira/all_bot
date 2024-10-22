@@ -16,9 +16,9 @@ intents.message_content = True   # Permite que o Bot leia o conteúdo de mensage
 # DISCORD_TOKEN = "MTI5NTcxODMwOTE2MDk0Nzc5NQ.Gs8FAx.YegUu3HgdxqwVUDqKI9Qno4AwoRkZLwUWI8jD8"
 
 # Obtém o token da API localizado no arquivo .env
-# DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
-# if DISCORD_TOKEN is None:
-# 	raise ValueError("Token não localizado.")
+DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
+if DISCORD_TOKEN is None:
+	raise ValueError("Token não localizado.")
 
 # Obtém o objeto do cliente do discord.py. O cliente é sinônimo do bot
 bot = discord.Client(intents=intents)
