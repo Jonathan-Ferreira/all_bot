@@ -23,6 +23,22 @@ if DISCORD_TOKEN is None:
 # Obtém o objeto do cliente do discord.py. O cliente é sinônimo do bot
 bot = discord.Client(intents=intents)
 
+@bot.connect
+async def on_connect(message):
+	await message.channel.send(f"Canais:\n{channel_list}")
+	await message.channel.send("Qual canal deseja se juntar(nome)?")
+	try:
+		msg = await bot.wait_for("message",timeout=3.0)
+		channel_name = msg.content
+		await message.channel.send(f"Canal {channel_name} foi selecionado") 
+		if channel_name in channel_list:
+			await bot.connect(channel_name)
+		else:
+			await message.channel.send("Falha ao conectar")
+			
+	except asyncio.TimeoutError:
+		await message.channel.send("Demorou muito a responder")
+
 # Listener de evento que ativa quando o bot é ligado
 @bot.event
 async def on_ready():
@@ -75,19 +91,7 @@ async def on_message(message):
 			await message.channel.send(f"Canais:\n{channel_info}")
 
 	if message.content == "juntar":
-		await message.channel.send(f"Canais:\n{channel_list}")
-		await message.channel.send("Qual canal deseja se juntar(nome)?")
-		try:
-			msg = await bot.wait_for("message",timeout=3.0)
-			channel_name = msg.content
-			await message.channel.send(f"Canal {channel_name} foi selecionado") 
-			if channel_name in channel_list:
-				await bot.connect(channel_name)
-			else:
-				await message.channel.send("Falha ao conectar")
-				
-		except asyncio.TimeoutError:
-			await message.channel.send("Demorou muito a responder")
+		on_connect(message)
 	
 	if message.content == "desconectar":
 		await bot.disconnect()
