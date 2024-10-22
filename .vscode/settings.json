@@ -1,0 +1,10 @@
+{
+
+    "python.languageServer": "Pylance",
+    "pylint.path": [
+        ">>>path/to/python<<<",
+        "-m",
+        "pylint"
+    ]
+
+}
