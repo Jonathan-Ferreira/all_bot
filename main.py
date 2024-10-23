@@ -2,6 +2,8 @@
 import discord
 from discord.ext import commands
 
+import yt_dlp
+
 # Importa o módulo de OS
 import os
 
@@ -22,10 +24,12 @@ if DISCORD_TOKEN is None:
 bot = commands.Bot(command_prefix="!",intents=intents)
 
 
+# Classe que tem como objetivo manipular todas as interações realizadas em um canal de voz
 class VoiceHandler:
 	def __init__(self,bot):
 		self.bot = bot
 
+	# Função para se juntar a um canal de voz
 	async def juntar(self,ctx):
 		if ctx.author.voice:
 			canal = ctx.author.voice.channel
@@ -34,13 +38,38 @@ class VoiceHandler:
 		else:
 			await ctx.channel.send('Você não está em um canal de voz')
 
+	# Função para sair de um canal de voz
 	async def sair(self,ctx):
 		if ctx.voice_client:
 			await ctx.voice_client.disconnect()
 			await ctx.channel.send(f'Saindo...')
 		else:
 			await ctx.channel.send("Não estou conectado em um canal")
+	
+	#Função para reproduzir áudios do Youtube
+	async def play(self,ctx,url):
+		ydl_opts = {
+			'format': 'bestaudio/best',
+            'quiet': True,
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }]
+		}
+		try:
+			with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+				info = ydl.extract_info(url,download=False)
+				url2 = info['url']
+				titulo = info.get('título', 'Título desconhecido')
+			fonte = discord.FFmpegPCMAudio(url2,executable="ffmpeg")
+			ctx.voice_client.play(fonte, after=lambda e:print("Fim"))	
+			await ctx.channel.send(f"Reproduzindo {titulo}")
 
+		except Exception as e:
+			await ctx.channel.send(f"Erro {str(e)}")
+		
+# Classe que tem como objetivo manipular todas as interações realizadas em um canal de texto
 class MessageHandler:
 	def __init__(self,bot):
 		self.bot = bot
@@ -93,6 +122,10 @@ async def juntar(ctx):
 @bot.command()
 async def sair(ctx):
 	await voice_handler.sair(ctx)
+
+@bot.command()
+async def play(ctx,*,url:str):
+	await voice_handler.play(ctx,url)
 
 # Listener de evento que ativa quando o bot é ligado
 @bot.event
