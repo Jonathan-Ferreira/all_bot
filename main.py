@@ -82,8 +82,6 @@ class MessageHandler:
 					channel_info = '\n'.join([f"Canal: {name} | ID: {channel_type}" for name, channel_type in channel_list])
 					await ctx.channel.send(f"Canais:\n{channel_info}")
 
-	
-
 voice_handler = VoiceHandler(bot)
 message_handler = MessageHandler(bot)
 
@@ -129,11 +127,6 @@ async def on_message(mensagem):
 	ctx = await bot.get_context(mensagem)
 	await message_handler.gerenciador_msg(ctx)
 	await bot.process_commands(mensagem)
-# Listener de evento que ativa quando uma mensagem é enviada ao canal
-
-
-		# Faz um chamado na função de tratamento para conexão com canais de voz.
-		 # Process commands after your custom logic
 		
 # Executa o bot com o token especificado.
 bot.run(DISCORD_TOKEN)
