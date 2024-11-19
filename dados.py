@@ -15,18 +15,17 @@ def dado(vlr):
 
     print(total, '<-', lista,vlr)
     # print(f'{0} -> ',vlr,total)
-    # print(random.randint(1,6))
+    # print(random.randint(1,6))f
 
 def parte_string(input_string):
     match = re.match(r"(\d+)([a-zA-Z])(\d+)", input_string)
     if match:
-        parte1 = int(match.group(1))  # Number before 'd'
-        parte2 = int(match.group(3))  # Number after 'd'
+        parte1 = int(match.group(1))  # Nro antes de 'd'
+        parte2 = int(match.group(3))  # Nro depois de 'd'
         return parte1, parte2
     else:
         raise ValueError("Formato Errado")
 
-
-roll = input('Digite a qtd e o tipo de dado que quiser rolar')
+roll = input('Digite a qtd e o tipo de dado que quiser rolar: ')
 
 dado(roll)

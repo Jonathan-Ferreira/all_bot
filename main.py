@@ -164,11 +164,11 @@ async def on_ready():
 # Gerenciar erros
 @bot.event
 async def on_command_error(ctx, erro):
-    # Check if the error is because the command was not found
+    # Checa se o erro foi causado devido ao comando inválido
     if isinstance(erro, commands.CommandNotFound):
         await ctx.send(f"{ctx.message.content} é um comando inválido. Caso possua alguma dúvida, digitar '!ajuda' para obter a lista de todos os comandos disponíveis.")
     else:
-        # Handle other types of errors (if any)
+        # Gerencia qualquer outro tipo de erro
         await ctx.send(f"Um erro ocorreu: {str(erro)}")
 
 @bot.event
