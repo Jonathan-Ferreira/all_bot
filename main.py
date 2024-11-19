@@ -21,13 +21,14 @@ if DISCORD_TOKEN is None:
 	raise ValueError("Token não localizado.")
 
 # Obtém o objeto do cliente do discord.py. O cliente é sinônimo do bot
-bot = commands.Bot(command_prefix="!",intents=intents)
+bot = commands.Bot(command_prefix="!",intents=intents,help_command=None)
 
 
 # Classe que tem como objetivo manipular todas as interações realizadas em um canal de voz
 class VoiceHandler:
 	def __init__(self,bot):
 		self.bot = bot
+
 
 	# Função para se juntar a um canal de voz
 	async def juntar(self,ctx):
@@ -45,6 +46,26 @@ class VoiceHandler:
 			await ctx.channel.send(f'Saindo...')
 		else:
 			await ctx.channel.send("Não estou conectado em um canal")
+
+	# Apresenta a listagem de canais do servidor e seus tipos (Voz, Texto, etc.)
+	async def tipo(self,ctx):
+		guild = ctx.guild
+		global channel_list
+		if channel_list == []:
+			await ctx.channel.send("Lista está vazia")	 
+		else:
+			channel_list = [(channel.name, channel.type) for channel in guild.channels if not isinstance(channel,discord.CategoryChannel)]
+			channel_info = '\n'.join([f"Canal: {name} | ID: {channel_type}" for name, channel_type in channel_list])
+			await ctx.channel.send(f"Canais:\n{channel_info}")
+
+	# Função para sair de um canal de voz
+	async def ajuda(self,ctx):
+		 # Iteração por todos os comandos
+		listagem = [f"`{ctx.prefix}{cmd.name}`: {cmd.help}" for cmd in bot.commands]
+		descricao = "\n".join(listagem)
+		
+		embed = discord.Embed(title="Comandos Disponíveis", description=descricao, color=0x00ff00)
+		await ctx.channel.send(embed=embed)
 	
 	#Função para reproduzir áudios do Youtube
 	async def play(self,ctx,url):
@@ -100,30 +121,27 @@ class MessageHandler:
 				channel_list = [(channel.name, channel.id) for channel in guild.channels if not isinstance(channel,discord.CategoryChannel)]
 				channel_info = '\n'.join([f"Canal: {name} | ID: {channel_id}" for name, channel_id in channel_list])
 				await ctx.channel.send(f"Canais:\n{channel_info}")
-		
-			# Apresenta a listagem de canais do servidor e seus tipos (Voz, Texto, etc.)
-			case "tipo":
-				guild = ctx.guild
-				if channel_list == []:
-					await ctx.channel.send("Lista está vazia")	 
-				else:
-					channel_list = [(channel.name, channel.type) for channel in guild.channels if not isinstance(channel,discord.CategoryChannel)]
-					channel_info = '\n'.join([f"Canal: {name} | ID: {channel_type}" for name, channel_type in channel_list])
-					await ctx.channel.send(f"Canais:\n{channel_info}")
 
 voice_handler = VoiceHandler(bot)
 message_handler = MessageHandler(bot)
 
+@bot.command(help = "Retorna a listagem de comandos")
+async def ajuda(ctx):
+	await voice_handler.ajuda(ctx)
 
-@bot.command()
+@bot.command(help = "Faz o bot se juntar ao canal de voz")
 async def juntar(ctx):
 	await voice_handler.juntar(ctx)
 
-@bot.command()
+@bot.command(help = "Apresenta a listagem de canais do servidor e seus tipos (Voz, Texto, etc.)")
+async def tipo(ctx):
+	await voice_handler.tipo(ctx)
+
+@bot.command(help = "Faz o bot sair do canal de voz")
 async def sair(ctx):
 	await voice_handler.sair(ctx)
 
-@bot.command()
+@bot.command(help = "Toca uma música do Youtube")
 async def play(ctx,*,url:str):
 	await voice_handler.play(ctx,url)
 
@@ -153,7 +171,6 @@ async def on_command_error(ctx, erro):
     else:
         # Handle other types of errors (if any)
         await ctx.send(f"Um erro ocorreu: {str(erro)}")
-
 
 @bot.event
 async def on_message(mensagem):
