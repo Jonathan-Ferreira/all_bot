@@ -88,8 +88,6 @@ class VoiceHandler:
 			channel_list = [(channel.name, channel.type) for channel in guild.channels if not isinstance(channel,discord.CategoryChannel)]
 			channel_info = '\n'.join([f"Canal: {name} | ID: {channel_type}" for name, channel_type in channel_list])
 			await ctx.channel.send(f"Canais:\n{channel_info}")
-
-
 		
 # Classe que tem como objetivo manipular todas as interações realizadas em um canal de texto
 class MessageHandler:
