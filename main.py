@@ -29,35 +29,6 @@ class VoiceHandler:
 	def __init__(self,bot):
 		self.bot = bot
 
-
-	# Função para se juntar a um canal de voz
-	async def juntar(self,ctx):
-		if ctx.author.voice:
-			canal = ctx.author.voice.channel
-			await canal.connect()
-			await ctx.channel.send(f'Juntando ao canal {canal}')			
-		else:
-			await ctx.channel.send('Você não está em um canal de voz')
-
-	# Função para sair de um canal de voz
-	async def sair(self,ctx):
-		if ctx.voice_client:
-			await ctx.voice_client.disconnect()
-			await ctx.channel.send(f'Saindo...')
-		else:
-			await ctx.channel.send("Não estou conectado em um canal")
-
-	# Apresenta a listagem de canais do servidor e seus tipos (Voz, Texto, etc.)
-	async def tipo(self,ctx):
-		guild = ctx.guild
-		global channel_list
-		if channel_list == []:
-			await ctx.channel.send("Lista está vazia")	 
-		else:
-			channel_list = [(channel.name, channel.type) for channel in guild.channels if not isinstance(channel,discord.CategoryChannel)]
-			channel_info = '\n'.join([f"Canal: {name} | ID: {channel_type}" for name, channel_type in channel_list])
-			await ctx.channel.send(f"Canais:\n{channel_info}")
-
 	# Função para sair de um canal de voz
 	async def ajuda(self,ctx):
 		 # Iteração por todos os comandos
@@ -67,6 +38,15 @@ class VoiceHandler:
 		embed = discord.Embed(title="Comandos Disponíveis", description=descricao, color=0x00ff00)
 		await ctx.channel.send(embed=embed)
 	
+	# Função para se juntar a um canal de voz
+	async def juntar(self,ctx):
+		if ctx.author.voice:
+			canal = ctx.author.voice.channel
+			await canal.connect()
+			await ctx.channel.send(f'Juntando ao canal {canal}')			
+		else:
+			await ctx.channel.send('Você não está em um canal de voz')
+
 	#Função para reproduzir áudios do Youtube
 	async def play(self,ctx,url):
 		ydl_opts = {
@@ -89,6 +69,27 @@ class VoiceHandler:
 
 		except Exception as e:
 			await ctx.channel.send(f"Erro {str(e)}")
+
+	# Função para sair de um canal de voz
+	async def sair(self,ctx):
+		if ctx.voice_client:
+			await ctx.voice_client.disconnect()
+			await ctx.channel.send(f'Saindo...')
+		else:
+			await ctx.channel.send("Não estou conectado em um canal")
+
+	# Apresenta a listagem de canais do servidor e seus tipos (Voz, Texto, etc.)
+	async def tipo(self,ctx):
+		guild = ctx.guild
+		global channel_list
+		if channel_list == []:
+			await ctx.channel.send("Lista está vazia")	 
+		else:
+			channel_list = [(channel.name, channel.type) for channel in guild.channels if not isinstance(channel,discord.CategoryChannel)]
+			channel_info = '\n'.join([f"Canal: {name} | ID: {channel_type}" for name, channel_type in channel_list])
+			await ctx.channel.send(f"Canais:\n{channel_info}")
+
+
 		
 # Classe que tem como objetivo manipular todas as interações realizadas em um canal de texto
 class MessageHandler:
@@ -133,17 +134,17 @@ async def ajuda(ctx):
 async def juntar(ctx):
 	await voice_handler.juntar(ctx)
 
-@bot.command(help = "Apresenta a listagem de canais do servidor e seus tipos (Voz, Texto, etc.)")
-async def tipo(ctx):
-	await voice_handler.tipo(ctx)
+@bot.command(help = "Toca uma música do Youtube")
+async def play(ctx,*,url:str):
+	await voice_handler.play(ctx,url)
 
 @bot.command(help = "Faz o bot sair do canal de voz")
 async def sair(ctx):
 	await voice_handler.sair(ctx)
 
-@bot.command(help = "Toca uma música do Youtube")
-async def play(ctx,*,url:str):
-	await voice_handler.play(ctx,url)
+@bot.command(help = "Apresenta a listagem de canais do servidor e seus tipos (Voz, Texto, etc.)")
+async def tipo(ctx):
+	await voice_handler.tipo(ctx)
 
 # Listener de evento que ativa quando o bot é ligado
 @bot.event
