@@ -139,7 +139,7 @@ async def play(ctx,*,url:str):
 @bot.command(help = "Faz o bot sair do canal de voz")
 async def sair(ctx):
 	await voice_handler.sair(ctx)
-
+ 
 @bot.command(help = "Apresenta a listagem de canais do servidor e seus tipos (Voz, Texto, etc.)")
 async def tipo(ctx):
 	await voice_handler.tipo(ctx)
