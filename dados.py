@@ -16,16 +16,7 @@ def tipo_rolagem(comando):
             print(rolagem_comum(comando, qtd_dados, tp_dados))
         case _:
             print('Ainda não Implementado')
-    #     case "2":
-    #         print(22)
-    #     case "3":
-    #         print(33)    
-    #     case "4":
-    #         print(44)!
-    #     case "5":
-    #         print(55)
-    #     case "6":
-    #         print(66)
+
 
 # Função para partir o comando em quantidade de dados, tipo de dados e tipo de rolagem
 def parte_string(input_string):    
@@ -56,25 +47,24 @@ def rolagem_comum(comando, qtd_dados, tipo_dados):
     total = 0
     lista = []
     try:
-        # Passando pra int
+        # Conversão para int para captar possíveis erros no comando
         qtd_dados = int(qtd_dados)
         tipo_dados = int(tipo_dados)
         while i <= qtd_dados:
             resultado = random.randint(1,tipo_dados)  
             total += resultado
             lista.append(resultado)       
-            # print('Iteração nro: ', i , 'Resultado: ', resultado, 'Tipo de Dado: ', dado, 'Total: ', total) 
-            i += 1
-        # Return the result instead of printing it
+            i += 1            
         return f"{total} <- {lista} {comando}"
+    
     except ValueError:
-        # Handle cases where conversion to integer fails
+        # Caso a conversão falhe
         return "Erro: Valores Inválidos."
     except TypeError:
-        # Handle any unexpected TypeError
+        # Outros erros de Tipo que podem ocorrer
         return "Erro: Valores Inválidos."
     except Exception as e:
-        # Handle other unexpected exceptions
+        # Tratativa para erros gerais
         return f"Erro inesperado: {e}"
 
 cmd = ''
