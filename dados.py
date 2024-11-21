@@ -1,5 +1,4 @@
 import random
-import re
 
 def concatena(lista):
     try:
