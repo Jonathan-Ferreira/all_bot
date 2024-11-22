@@ -2,7 +2,7 @@
 import discord
 from discord.ext import commands
 import dados
-
+import acesso as ac
 import yt_dlp
 
 # Importa o módulo de OS
@@ -17,7 +17,7 @@ intents = discord.Intents.default() # Usa as intenções padrões do Bot.
 intents.message_content = True   # Permite que o Bot leia o conteúdo de mensagens
 
 # Obtém o token da API na variável local DISCORD_TOKEN
-DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
+DISCORD_TOKEN = ac.decryptar_token()
 if DISCORD_TOKEN is None:
 	raise ValueError("Token não localizado.")
 
