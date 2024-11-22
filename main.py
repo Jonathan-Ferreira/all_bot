@@ -129,7 +129,7 @@ message_handler = MessageHandler(bot)
 async def ajuda(ctx):
 	await voice_handler.ajuda(ctx)
 
-@bot.command()
+@bot.command(help = "Rolagem de dados")
 async def rolar(ctx, *, command: str):
     resultado = dados.tipo_rolagem(command)  # Função de Rolagem de dados
     await ctx.channel.send(resultado)
