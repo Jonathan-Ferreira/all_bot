@@ -10,12 +10,13 @@ def concatena(lista):
 
 def tipo_rolagem(comando):
     tp_rolagem, qtd_dados, tp_dados = parte_string(comando)
+    resultado = ''
     match tp_rolagem:
-        case "!":
-            print(rolagem_comum(comando, qtd_dados, tp_dados))
+        case "@":
+            resultado = rolagem_comum(comando[1:], qtd_dados, tp_dados)
         case _:
-            print('Ainda não Implementado')
-
+            resultado = 'Ainda não Implementado'
+    return resultado
 
 # Função para partir o comando em quantidade de dados, tipo de dados e tipo de rolagem
 def parte_string(input_string):    
@@ -65,10 +66,4 @@ def rolagem_comum(comando, qtd_dados, tipo_dados):
     except Exception as e:
         # Tratativa para erros gerais
         return f"Erro inesperado: {e}"
-
-cmd = ''
-
-while cmd != "Sair":
-    cmd = input('Digite a qtd e o tipo de dado que quiser rolar: ')
-    tipo_rolagem(cmd)
 

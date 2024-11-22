@@ -1,6 +1,7 @@
 # Importa o discord.py, permitindo o acesso a API do discord
 import discord
 from discord.ext import commands
+import dados
 
 import yt_dlp
 
@@ -37,7 +38,7 @@ class VoiceHandler:
 		
 		embed = discord.Embed(title="Comandos Disponíveis", description=descricao, color=0x00ff00)
 		await ctx.channel.send(embed=embed)
-	
+
 	# Função para se juntar a um canal de voz
 	async def juntar(self,ctx):
 		if ctx.author.voice:
@@ -127,6 +128,11 @@ message_handler = MessageHandler(bot)
 @bot.command(help = "Retorna a listagem de comandos")
 async def ajuda(ctx):
 	await voice_handler.ajuda(ctx)
+
+@bot.command()
+async def rolar(ctx, *, command: str):
+    resultado = dados.tipo_rolagem(command)  # Função de Rolagem de dados
+    await ctx.channel.send(resultado)
 
 @bot.command(help = "Faz o bot se juntar ao canal de voz")
 async def juntar(ctx):
