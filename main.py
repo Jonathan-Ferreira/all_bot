@@ -22,7 +22,7 @@ if DISCORD_TOKEN is None:
 	raise ValueError("Token não localizado.")
 
 # Obtém o objeto do cliente do discord.py. O cliente é sinônimo do bot
-bot = commands.Bot(command_prefix="!",intents=intents,help_command=None)
+bot = commands.Bot(command_prefix="*",intents=intents,help_command=None)
 
 
 # Classe que tem como objetivo manipular todas as interações realizadas em um canal de voz
@@ -129,7 +129,7 @@ message_handler = MessageHandler(bot)
 async def ajuda(ctx):
 	await voice_handler.ajuda(ctx)
 
-@bot.command(help = "Rolagem de dados")
+@bot.command(help = "Rola dados. Para mais informações, utilize *dados (ainda não implementado)")
 async def rolar(ctx, *, command: str):
     resultado = dados.tipo_rolagem(command)  # Função de Rolagem de dados
     await ctx.channel.send(resultado)
