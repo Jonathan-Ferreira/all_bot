@@ -15,8 +15,5 @@ msg_encriptada = fernet.encrypt(var.encode())
 with open("token_encriptado.txt", "wb") as arquivo:
     arquivo.write(msg_encriptada)
 
-# Save the key to a separate file (do NOT commit this to GitHub)
-with open("chave.key", "wb") as arq_chave:
-    arq_chave.write(chave)
 
 print("Token Encriptado Salvo")
