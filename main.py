@@ -5,12 +5,6 @@ import dados
 import acesso as ac
 import yt_dlp
 
-# Importa o módulo de OS
-import os
-
-# Importa a função LOAD_DOTENV do módulo DOTENV para ler variáveis de ambiente, eliminando a necessidade de adicionar o token no código.
-from dotenv import load_dotenv
-
 channel_list = []
 
 intents = discord.Intents.default() # Usa as intenções padrões do Bot.
@@ -22,7 +16,7 @@ if DISCORD_TOKEN is None:
 	raise ValueError("Token não localizado.")
 
 # Obtém o objeto do cliente do discord.py. O cliente é sinônimo do bot
-bot = commands.Bot(command_prefix="*",intents=intents,help_command=None)
+bot = commands.Bot(command_prefix="!",intents=intents,help_command=None)
 
 
 # Classe que tem como objetivo manipular todas as interações realizadas em um canal de voz
