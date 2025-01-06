@@ -18,8 +18,8 @@ def valida_arquivo():
 
 def carrega_chave():
     """
-    Loads the encryption key from the key file.
-    Returns the key as bytes.
+    Carrega a chave de encriptação do arquivo chave.
+    Retorna a chave em bytes.
     """
     valida_arquivo()
     with open(PATH_CHAVE, "rb") as arquivo_chave:
@@ -27,8 +27,8 @@ def carrega_chave():
 
 def carrega_token_encriptado():
     """
-    Loads the encrypted token from the encrypted token file.
-    Returns the encrypted token as bytes.
+    Carrega o token encriptado do arquivo.
+    Retorna o token encriptado como bytes.
     """
     valida_arquivo()
     with open(PATH_TOKEN_ENCRIPTADO, "rb") as arquivo_token:
@@ -36,8 +36,8 @@ def carrega_token_encriptado():
 
 def decryptar_token():
     """
-    Decrypts the encrypted token using the stored key.
-    Returns the decrypted token as a string.
+    Decripta o token usando a chave armazenada.
+    Returna o token decriptado como string
     """
     chave = carrega_chave()
     token_encriptado = carrega_token_encriptado()
@@ -45,4 +45,4 @@ def decryptar_token():
     try:
         return fernet.decrypt(token_encriptado).decode()
     except Exception as e:
-        raise ValueError("Falha ao descriptar token. GarantA que a chave pertence ao token.") from e
+        raise ValueError("Falha ao descriptar token. Garanta que a chave pertence ao token.") from e
