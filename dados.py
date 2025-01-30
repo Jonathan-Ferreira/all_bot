@@ -128,7 +128,7 @@ def rolagem_destino(comando):
         # Tratativa para erros gerais
         return f"Erro inesperado: {e}"
    
-def rolagem_status(comando):
+def rolagem_status():
     resultados = []
     try:
         for _ in range(6):

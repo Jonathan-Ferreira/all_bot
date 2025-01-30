@@ -4,7 +4,7 @@ from discord.ext import commands
 import dados
 import acesso as ac
 import yt_dlp
-
+	
 channel_list = []
 
 intents = discord.Intents.default() # Usa as intenções padrões do Bot.
