@@ -4,7 +4,7 @@ from discord.ext import commands
 import dados
 import acesso as ac
 import yt_dlp
-	
+
 channel_list = []
 
 intents = discord.Intents.default() # Usa as intenções padrões do Bot.
@@ -123,7 +123,12 @@ message_handler = MessageHandler(bot)
 async def ajuda(ctx):
 	await voice_handler.ajuda(ctx)
 
-@bot.command(help = "Rola dados. Para mais informações, utilize *dados (ainda não implementado)")
+@bot.command(help = "Rola dados.\n " +
+			 		"!rolar status : Rola 6 vezes 4d6, removendo o menor valor para rolar status de personagem \n" +
+			 		"!rolar @xdy : Rola x vezes um dado de y lados. Ex.: !rolar 4d6 rola um dado de 6 lados 4 vezes\n" +
+					"!rolar #xdy : Rola x vezes um dado de y lados e caso um dos valores do dado seja o máximo, rola novamente.\n" +
+					"!rolar $4d : Rola 4 dados de destino com resultados variando de -1 até 1"					
+			)
 async def rolar(ctx, *, command: str):
     resultado = dados.tipo_rolagem(command)  # Função de Rolagem de dados
     await ctx.channel.send(resultado)

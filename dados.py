@@ -14,6 +14,8 @@ def concatena(lista):
 def tipo_rolagem(comando):
     if comando == "status":
         resultado = rolagem_status(comando[1:])
+    elif comando == "destino":
+        resultado = rolagem_destino(comando[1:])
     else:
         tp_rolagem, qtd_dados, tp_dados = parte_string(comando)
         resultado = ''
@@ -22,8 +24,6 @@ def tipo_rolagem(comando):
                 resultado = rolagem_comum(comando[1:], qtd_dados, tp_dados)
             case "#":
                 resultado = rolagem_explosiva(comando[1:], qtd_dados, tp_dados)
-            case "$":
-                resultado = rolagem_destino(comando[1:])
             case _:
                 resultado = 'Ainda não Implementado'
     return resultado
@@ -116,7 +116,7 @@ def rolagem_destino(comando):
             total += resultado
             lista.append(resultado)       
             i += 1            
-        return f"{total} <- {lista} {comando}"
+        return f"{total} <- {lista} "
     
     except ValueError:
         # Caso a conversão falhe
