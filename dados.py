@@ -12,17 +12,20 @@ def concatena(lista):
 
 # Método para definir qual tipo de rolagem fazer
 def tipo_rolagem(comando):
-    tp_rolagem, qtd_dados, tp_dados = parte_string(comando)
-    resultado = ''
-    match tp_rolagem:
-        case "@":
-            resultado = rolagem_comum(comando[1:], qtd_dados, tp_dados)
-        case "#":
-            resultado = rolagem_explosiva(comando[1:], qtd_dados, tp_dados)
-        case "$":
-            resultado = rolagem_destino(comando[1:])
-        case _:
-            resultado = 'Ainda não Implementado'
+    if comando == "status":
+        resultado = rolagem_status(comando[1:])
+    else:
+        tp_rolagem, qtd_dados, tp_dados = parte_string(comando)
+        resultado = ''
+        match tp_rolagem:
+            case "@":
+                resultado = rolagem_comum(comando[1:], qtd_dados, tp_dados)
+            case "#":
+                resultado = rolagem_explosiva(comando[1:], qtd_dados, tp_dados)
+            case "$":
+                resultado = rolagem_destino(comando[1:])
+            case _:
+                resultado = 'Ainda não Implementado'
     return resultado
 
 # Função para partir o comando em quantidade de dados, tipo de dados e tipo de rolagem
@@ -125,3 +128,22 @@ def rolagem_destino(comando):
         # Tratativa para erros gerais
         return f"Erro inesperado: {e}"
    
+def rolagem_status(comando):
+    resultados = []
+    try:
+        for _ in range(6):
+            rolagens = [random.randint(1, 6) for _ in range(4)]
+            menor = min(rolagens)
+            total = sum(rolagens) - menor  # Soma sem o menor valor
+            resultados.append(f"{total} <- {rolagens} (removendo {menor})")    
+    except ValueError:
+        # Caso a conversão falhe
+        return "Erro: Valores Inválidos."
+    except TypeError:
+        # Outros erros de Tipo que podem ocorrer
+        return "Erro: Valores Inválidos."
+    except Exception as e:
+        # Tratativa para erros gerais
+        return f"Erro inesperado: {e}"
+    
+    return "\n".join(resultados)
