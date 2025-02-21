@@ -125,7 +125,7 @@ async def ajuda(ctx):
 
 @bot.command(help = "Rola dados.\n " +
 			 		"!rolar status : Rola 6 vezes 4d6, removendo o menor valor para rolar status de personagem \n" +
-					 "!rolar destino : Rola 4 dados de destino com resultados variando de -1 até 1 \n" +  
+					"!rolar destino : Rola 4 dados de destino com resultados variando de -1 até 1 \n" +  
 			 		"!rolar @xdy : Rola x vezes um dado de y lados. Ex.: !rolar 4d6 rola um dado de 6 lados 4 vezes\n" +
 					"!rolar #xdy : Rola x vezes um dado de y lados e caso um dos valores do dado seja o máximo, rola novamente.\n" 										
 			)

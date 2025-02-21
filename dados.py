@@ -13,7 +13,7 @@ def concatena(lista):
 # Método para definir qual tipo de rolagem fazer
 def tipo_rolagem(comando):
     if comando == "status":
-        resultado = rolagem_status(comando[1:])
+        resultado = rolagem_status()
     elif comando == "destino":
         resultado = rolagem_destino(comando[1:])
     else:
@@ -106,7 +106,7 @@ def rolagem_explosiva(comando, qtd_dados, tipo_dados):
         # Tratativa para erros gerais
         return f"Erro inesperado: {e}"
     
-def rolagem_destino(comando):
+def rolagem_destino():
     i = 1
     total = 0
     lista = []
